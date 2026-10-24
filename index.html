@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warm Little Corner for My Friends 🌸</title>
+    <title>A Cozy Little Corner for My Bestie 🌸</title>
     <!-- Tailwind CSS & Google Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
@@ -13,11 +13,22 @@
         body {
             font-family: 'Quicksand', sans-serif;
             background-color: #fff0f5;
+            overflow-x: hidden;
         }
         h1, h2, h3, .font-heading {
             font-family: 'Fredoka', cursive;
         }
-        /* Custom Flip Card CSS */
+        /* Canvas Particle Overlay for Click Effects */
+        #fxCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        /* 3D Flip Card Effect */
         .perspective-1000 {
             perspective: 1000px;
         }
@@ -32,120 +43,119 @@
         .rotate-y-180 {
             transform: rotateY(180deg);
         }
+        /* Custom Glowing Pulse */
+        .glow-pink {
+            box-shadow: 0 0 20px rgba(244, 114, 182, 0.35);
+        }
     </style>
 </head>
-<body class="text-pink-950 min-h-screen pb-16">
+<body class="text-pink-950 min-h-screen pb-20 select-none">
+
+    <!-- Interactive Particle Overlay Canvas -->
+    <canvas id="fxCanvas"></canvas>
 
     <!-- Header Section -->
-    <header class="text-center py-10 px-4 bg-pink-200/70 rounded-b-[40px] shadow-sm">
-        <div class="inline-block p-3 bg-white rounded-full shadow-sm mb-3">
-            <i data-lucide="heart" class="w-8 h-8 text-pink-500 fill-pink-400"></i>
+    <header class="text-center py-10 px-4 bg-gradient-to-b from-pink-200/80 to-pink-100/60 rounded-b-[45px] shadow-sm relative overflow-hidden">
+        <div class="inline-block p-3.5 bg-white rounded-full shadow-md mb-3 animate-bounce">
+            <i data-lucide="sparkles" class="w-8 h-8 text-pink-500 fill-pink-300"></i>
         </div>
-        <h1 class="text-3xl md:text-4xl font-bold text-pink-600 mb-2">Hello, My Favorite Friends! 💕</h1>
-        <p class="text-pink-800 max-w-md mx-auto text-sm md:text-base leading-relaxed">
-            Web sederhana ini sengaja dibuat khusus buat kalian. Tempat kecil yangisinya penuh rasa terima kasih dan hal-hal manis. Makasih ya udah hadir di hidup aku! ✨
+        <h1 class="text-3xl md:text-4xl font-bold text-pink-600 mb-2 font-heading">Hello, My Bestieee! 💕</h1>
+        <p class="text-pink-800 max-w-md mx-auto text-sm md:text-base leading-relaxed px-2 font-medium">
+            Web sederhana yang aku buat khusus hehe, maaf yaww banyak kurangnyaaa... Semoga suka 💕
         </p>
         <p class="mt-3 text-xs text-pink-600 font-semibold tracking-wide">— Made with love, Nala 🌷</p>
     </header>
 
     <main class="max-w-2xl mx-auto px-4 mt-8 space-y-8">
 
-        <!-- Music Player Widget -->
-        <section class="bg-white/90 backdrop-blur rounded-3xl p-4 shadow-sm border border-pink-100 flex items-center justify-between">
+        <!-- Continuous Music Player -->
+        <section class="bg-white/90 backdrop-blur rounded-3xl p-4 shadow-sm border border-pink-200 flex items-center justify-between glow-pink">
             <div class="flex items-center space-x-3">
-                <div class="w-11 h-11 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500">
+                <div class="w-11 h-11 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500 shadow-inner">
                     <i data-lucide="music" class="w-5 h-5"></i>
                 </div>
                 <div>
                     <p class="text-[10px] text-pink-400 font-bold uppercase tracking-wider">Background Music</p>
-                    <p class="text-xs md:text-sm font-bold text-pink-700" id="songTitle">Lagu penenang suasana ✨</p>
+                    <p class="text-xs md:text-sm font-bold text-pink-700" id="songTitle">Press play for cozy background vibes ✨</p>
                 </div>
             </div>
-            <!-- File mp3 kamu harus di-upload dengan nama 'lagu.mp3' di GitHub -->
+            <!-- File mp3 harus di-upload dengan nama 'lagu.mp3' di GitHub -->
             <audio id="myAudio" loop>
                 <source src="lagu.mp3" type="audio/mpeg">
             </audio>
-            <button onclick="toggleMusic()" id="playBtn" class="bg-pink-400 hover:bg-pink-500 text-white px-4 py-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
+            <button onclick="toggleMusic(event)" id="playBtn" class="bg-pink-400 hover:bg-pink-500 active:scale-95 text-white px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition shadow-sm">
                 <i data-lucide="play" class="w-4 h-4" id="playIcon"></i> Putar Musik
             </button>
         </section>
 
-        <!-- FITUR BARU: Interactive Flip Cards Section -->
+        <!-- 3D Interactive Flip Cards -->
         <section class="space-y-3">
             <div class="flex items-center gap-2 mb-1 px-1">
-                <i data-lucide="sparkles" class="text-pink-500 w-5 h-5"></i>
-                <h2 class="text-lg font-bold text-pink-700 font-heading">Pesan Lucu (Klik buat dibalik! 🃏)</h2>
+                <i data-lucide="heart" class="text-pink-500 w-5 h-5 fill-pink-400"></i>
+                <h2 class="text-lg font-bold text-pink-700 font-heading">Interactive Thoughts (Tap to flip 🃏)</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <!-- Flip Card 1 -->
-                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this)">
+                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this, event)">
                     <div class="card-inner relative w-full h-full transform-style-3d">
-                        <!-- Depan -->
-                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm">
-                            <span class="text-3xl mt-2">✨</span>
-                            <p class="font-bold text-pink-700 text-sm font-heading">Kenapa kalian berharga banget buat Nala?</p>
-                            <span class="text-[11px] text-pink-400 font-medium">Klik buat lihat jawabannya ➔</span>
+                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm hover:border-pink-300">
+                            <span class="text-3xl mt-2">💌</span>
+                            <p class="font-bold text-pink-700 text-sm font-heading">A note of gratitude</p>
+                            <span class="text-[11px] text-pink-400 font-medium">Click to open ➔</span>
                         </div>
-                        <!-- Belakang -->
-                        <div class="absolute inset-0 bg-pink-100 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
+                        <div class="absolute inset-0 bg-pink-100/90 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
                             <p class="text-xs text-pink-900 leading-relaxed font-medium">
-                                Karena kalian tuh selalu ada dan bikin suasana jadi lebih hangat. Makasih ya udah dengerin cerita random aku, nemenin hal-hal sepele, dan tetep sabar. Punya temen kayak kalian tuh salah satu hal paling bersyukur yang aku punya! 💖
+                                Thank you for being such a constant and comforting presence in my life. Having friends like you makes even the chaotic days feel so much lighter and easier to navigate. I truly appreciate you!
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Flip Card 2 -->
-                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this)">
+                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this, event)">
                     <div class="card-inner relative w-full h-full transform-style-3d">
-                        <!-- Depan -->
-                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm">
+                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm hover:border-pink-300">
                             <span class="text-3xl mt-2">🌱</span>
-                            <p class="font-bold text-pink-700 text-sm font-heading">Pengingat pas harimu terasa berat</p>
-                            <span class="text-[11px] text-pink-400 font-medium">Klik buat balik kartu ➔</span>
+                            <p class="font-bold text-pink-700 text-sm font-heading">On overwhelming days</p>
+                            <span class="text-[11px] text-pink-400 font-medium">Click to open ➔</span>
                         </div>
-                        <!-- Belakang -->
-                        <div class="absolute inset-0 bg-pink-100 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
+                        <div class="absolute inset-0 bg-pink-100/90 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
                             <p class="text-xs text-pink-900 leading-relaxed font-medium">
-                                Gak apa-apa banget kalau hari ini jalannya gak sesuai rencana kamu. Pencapaian terbesar hari ini adalah kamu berhasil bertahan dan lewati semuanya. Pelan-pelan aja ya, jangan terlalu galak sama diri sendiri. You did great! 🌸
+                                Whenever things feel too heavy, remember that it's completely fine to slow down. You don't have to figure everything out all at once. Take a deep breath and give yourself some grace.
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Flip Card 3 -->
-                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this)">
+                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this, event)">
                     <div class="card-inner relative w-full h-full transform-style-3d">
-                        <!-- Depan -->
-                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm">
-                            <span class="text-3xl mt-2">🤝</span>
-                            <p class="font-bold text-pink-700 text-sm font-heading">Janji Kecil Kita</p>
-                            <span class="text-[11px] text-pink-400 font-medium">Klik buat balik kartu ➔</span>
+                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm hover:border-pink-300">
+                            <span class="text-3xl mt-2">☕</span>
+                            <p class="font-bold text-pink-700 text-sm font-heading">A quiet reminder</p>
+                            <span class="text-[11px] text-pink-400 font-medium">Click to open ➔</span>
                         </div>
-                        <!-- Belakang -->
-                        <div class="absolute inset-0 bg-pink-100 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
+                        <div class="absolute inset-0 bg-pink-100/90 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
                             <p class="text-xs text-pink-900 leading-relaxed font-medium">
-                                Janji ya, walaupun nanti kita makin sibuk sama urusan masing-masing, jangan sungkan buat cerita atau sekadar nyapa. Kalau lagi butuh tempat cerita atau rehat, pintu rumah/chat aku selalu terbuka buat kalian! 🌷
+                                You are doing much better than you give yourself credit for. Even on days when you feel stuck or unproductive, just making it through is already enough. Proud of you, always.
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Flip Card 4 -->
-                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this)">
+                <div class="perspective-1000 h-48 cursor-pointer" onclick="flipCard(this, event)">
                     <div class="card-inner relative w-full h-full transform-style-3d">
-                        <!-- Depan -->
-                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm">
-                            <span class="text-3xl mt-2">🍦</span>
-                            <p class="font-bold text-pink-700 text-sm font-heading">Resep Bikin Mood Bagus</p>
-                            <span class="text-[11px] text-pink-400 font-medium">Klik buat balik kartu ➔</span>
+                        <div class="absolute inset-0 bg-white border border-pink-200 rounded-3xl p-5 flex flex-col justify-between items-center text-center backface-hidden shadow-sm hover:border-pink-300">
+                            <span class="text-3xl mt-2">✨</span>
+                            <p class="font-bold text-pink-700 text-sm font-heading">Safe space for you</p>
+                            <span class="text-[11px] text-pink-400 font-medium">Click to open ➔</span>
                         </div>
-                        <!-- Belakang -->
-                        <div class="absolute inset-0 bg-pink-100 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
+                        <div class="absolute inset-0 bg-pink-100/90 border border-pink-300 rounded-3xl p-5 flex items-center justify-center text-center backface-hidden rotate-y-180 shadow-sm overflow-y-auto">
                             <p class="text-xs text-pink-900 leading-relaxed font-medium">
-                                Cari makanan/minuman manis kesukaanmu, pasang lagu kesukaan, terus jauhin HP sebentar dari hal-hal yang bikin pusing. Inget, kamu berhak istirahat dan bahagia hari ini! ✨
+                                Life gets busy, but please know my door is always open. No formal catch-ups or explanations needed—just reach out whenever you want to vent, laugh, or chill.
                             </p>
                         </div>
                     </div>
@@ -154,65 +164,86 @@
             </div>
         </section>
 
-        <!-- Sweet Messages / Open When Section (Surat Panjang) -->
+        <!-- Read When Section -->
         <section class="bg-white rounded-3xl p-6 shadow-sm border border-pink-100">
             <div class="flex items-center gap-2 mb-2">
                 <i data-lucide="mail-open" class="text-pink-500"></i>
-                <h2 class="text-lg font-bold text-pink-700 font-heading">Baca Saat... 💌</h2>
+                <h2 class="text-lg font-bold text-pink-700 font-heading">Read When... 💌</h2>
             </div>
-            <p class="text-xs text-pink-500 mb-4">Pilih dan klik surat di bawah ini sesuai suasana hati kamu sekarang ya!</p>
+            <p class="text-xs text-pink-500 mb-4">Click a letter below depending on how your day is going:</p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button onclick="openNote('sad')" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between">
-                    <span class="text-xs font-bold text-pink-800">🌧️ Lagi sedih / galau</span>
+                <button onclick="openNote('sad', event)" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between active:scale-98">
+                    <span class="text-xs font-bold text-pink-800">🌧️ When today feels heavy</span>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-pink-400"></i>
                 </button>
-                <button onclick="openNote('tired')" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between">
-                    <span class="text-xs font-bold text-pink-800">☕ Lagi capek banget</span>
+                <button onclick="openNote('tired', event)" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between active:scale-98">
+                    <span class="text-xs font-bold text-pink-800">☕ When you're drained</span>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-pink-400"></i>
                 </button>
-                <button onclick="openNote('doubt')" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between">
-                    <span class="text-xs font-bold text-pink-800">⭐ Lagi insecure / ragu</span>
+                <button onclick="openNote('doubt', event)" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between active:scale-98">
+                    <span class="text-xs font-bold text-pink-800">⭐ When you doubt yourself</span>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-pink-400"></i>
                 </button>
-                <button onclick="openNote('miss')" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between">
-                    <span class="text-xs font-bold text-pink-800">🧸 Lagi kangen ngobrol</span>
+                <button onclick="openNote('miss', event)" class="bg-pink-50 hover:bg-pink-100 border border-pink-200 p-3.5 rounded-2xl text-left transition flex items-center justify-between active:scale-98">
+                    <span class="text-xs font-bold text-pink-800">🧸 When you want to catch up</span>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-pink-400"></i>
                 </button>
             </div>
         </section>
 
-        <!-- Game Sederhana 1: Pop the Hearts Mood Booster -->
+        <!-- GAME UNIK 1: Fortune Cookie / Magic Capsule Cracker -->
+        <section class="bg-white rounded-3xl p-6 shadow-sm border border-pink-100 text-center relative overflow-hidden">
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <i data-lucide="cookie" class="text-pink-500"></i>
+                <h2 class="text-lg font-bold text-pink-700 font-heading">Crack a Fortune Cookie 🥠</h2>
+            </div>
+            <p class="text-xs text-pink-500 mb-4">Tap the cookie to break it open and get your daily message!</p>
+            
+            <div class="bg-pink-50 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[170px]">
+                <button onclick="crackCookie(event)" id="cookieBtn" class="text-6xl transition transform active:scale-75 hover:scale-110 cursor-pointer my-2 filter drop-shadow">
+                    🥠
+                </button>
+                <div id="cookieResult" class="text-xs text-pink-900 mt-2 font-medium leading-relaxed min-h-[40px] flex items-center justify-center px-4">
+                    <span class="text-pink-400 italic">"Click the cookie to reveal your note!"</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME UNIK 2: Bubble Pop Mood Lifter with Combo Counter -->
         <section class="bg-white rounded-3xl p-6 shadow-sm border border-pink-100 text-center">
             <div class="flex items-center justify-center gap-2 mb-2">
-                <i data-lucide="gamepad-2" class="text-pink-500"></i>
-                <h2 class="text-lg font-bold text-pink-700 font-heading">Permainan Hati 💖</h2>
+                <i data-lucide="sparkles" class="text-pink-500"></i>
+                <h2 class="text-lg font-bold text-pink-700 font-heading">Bubble Pop & Chill 🫧</h2>
             </div>
-            <p class="text-xs text-pink-500 mb-4">Lagi pusing atau bosen? Pencet love di bawah buat kumpulin semangat!</p>
+            <p class="text-xs text-pink-500 mb-4">Pop bubbles to collect good energy and trigger heart bursts!</p>
             
             <div class="bg-pink-50 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[160px]">
-                <p class="text-xs font-bold text-pink-500 mb-2">Semangat Terkumpul: <span id="score" class="text-pink-600 text-lg">0</span></p>
-                <button onclick="popHeart()" id="popBtn" class="text-5xl transition active:scale-75 select-none cursor-pointer my-2">
+                <div class="flex items-center gap-4 text-xs font-bold text-pink-600 mb-2">
+                    <p>Energy: <span id="score" class="text-pink-600 text-base font-heading">0</span></p>
+                    <p>Combo: <span id="combo" class="text-pink-500 text-base font-heading">x1</span></p>
+                </div>
+                <button onclick="popHeart(event)" id="popBtn" class="text-5xl transition active:scale-75 select-none cursor-pointer my-2 hover:scale-110">
                     💖
                 </button>
-                <p id="gameMessage" class="text-xs text-pink-700 mt-2 font-medium min-h-[20px]"></p>
+                <p id="gameMessage" class="text-xs text-pink-700 font-medium min-h-[20px] mt-1"></p>
             </div>
         </section>
 
-        <!-- Game Sederhana 2: Comfort Capsule & Pelukan Hangat -->
+        <!-- Warmth & Virtual Hug Generator -->
         <section class="bg-white rounded-3xl p-6 shadow-sm border border-pink-100 text-center">
             <div class="flex items-center justify-center gap-2 mb-2">
-                <i data-lucide="smile" class="text-pink-500"></i>
-                <h2 class="text-lg font-bold text-pink-700 font-heading">Dosis Semangat Harian 🍬</h2>
+                <i data-lucide="heart-handshake" class="text-pink-500"></i>
+                <h2 class="text-lg font-bold text-pink-700 font-heading">Instant Comfort 🌷</h2>
             </div>
-            <p class="text-xs text-pink-500 mb-4">Butuh kata-kata manis instan atau pelukan online?</p>
+            <p class="text-xs text-pink-500 mb-4">In need of a quick boost or a warm virtual hug?</p>
             
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button onclick="getCompliment()" class="bg-pink-400 hover:bg-pink-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs transition shadow-sm">
-                    ✨ Ambil Kata-Kata Manis
+                <button onclick="getCompliment(event)" class="bg-pink-400 hover:bg-pink-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs transition shadow-sm active:scale-95">
+                    ✨ Gentle Reminder
                 </button>
-                <button onclick="sendVirtualHug()" class="bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold px-4 py-2.5 rounded-2xl text-xs transition">
-                    🫂 Kirim Pelukan Hangat
+                <button onclick="sendVirtualHug(event)" class="bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold px-4 py-2.5 rounded-2xl text-xs transition active:scale-95">
+                    🫂 Virtual Warmth
                 </button>
             </div>
 
@@ -224,38 +255,99 @@
 
     <!-- Footer -->
     <footer class="text-center mt-12 text-xs text-pink-500 space-y-1">
-        <p>Semoga hari-hari kalian selalu dikelilingi kebahagiaan ya! 🌸</p>
-        <p class="font-bold text-pink-600">— Dengan sayang, Nala ✨</p>
+        <p>Hope your days are filled with genuine peace & cozy moments 🌸</p>
+        <p class="font-bold text-pink-600">— Always, Nala ✨</p>
     </footer>
 
-    <!-- Pop-up Modal untuk Surat Panjang -->
+    <!-- Pop-up Modal -->
     <div id="noteModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-xl border border-pink-200 text-center">
             <div class="text-4xl mb-2" id="modalEmoji">💌</div>
-            <h3 class="text-base font-bold text-pink-700 mb-3 font-heading" id="modalTitle">Judul Surat</h3>
-            <p class="text-xs text-pink-900 leading-relaxed mb-6 text-left whitespace-pre-line" id="modalBody">Isi surat...</p>
-            <button onclick="closeNote()" class="bg-pink-400 hover:bg-pink-500 text-white font-bold px-6 py-2.5 rounded-2xl text-xs transition">
-                Tutup & Peluk Nala 💖
+            <h3 class="text-base font-bold text-pink-700 mb-3 font-heading" id="modalTitle">Note Title</h3>
+            <p class="text-xs text-pink-900 leading-relaxed mb-6 text-left whitespace-pre-line" id="modalBody">Note content...</p>
+            <button onclick="closeNote(event)" class="bg-pink-400 hover:bg-pink-500 text-white font-bold px-6 py-2.5 rounded-2xl text-xs transition active:scale-95">
+                Close Note 💖
             </button>
         </div>
     </div>
 
     <script>
-        // Lucide Icons Init
+        // Init Lucide Icons
         lucide.createIcons();
 
-        // Music Player Toggle
+        /* ==================== GLOBAL CLICK PARTICLE EFFECT ==================== */
+        const canvas = document.getElementById('fxCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particleTypes = ['💖', '✨', '🌸', '⭐', '🎀'];
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.symbol = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+                this.size = Math.random() * 14 + 12;
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4 - 2;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.font = `${this.size}px sans-serif`;
+                ctx.fillText(this.symbol, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        function createBurst(x, y, count = 8) {
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            createBurst(e.clientX, e.clientY, 7);
+        });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) particles.splice(index, 1);
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        /* ==================== CONTINUOUS MUSIC PLAYER ==================== */
         const audio = document.getElementById('myAudio');
         const playBtn = document.getElementById('playBtn');
         let isPlaying = false;
 
-        function toggleMusic() {
+        function toggleMusic(e) {
+            if (e) e.stopPropagation();
             if (isPlaying) {
                 audio.pause();
                 playBtn.classList.replace('bg-pink-600', 'bg-pink-400');
                 playBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Putar Musik`;
             } else {
-                audio.play().catch(e => alert("Jangan lupa upload file lagu dengan nama 'lagu.mp3' di GitHub kamu yaa!"));
+                audio.play().catch(err => alert("Jangan lupa upload file 'lagu.mp3' di repository GitHub kamu yaa!"));
                 playBtn.classList.replace('bg-pink-400', 'bg-pink-600');
                 playBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Pause Musik`;
             }
@@ -263,37 +355,39 @@
             lucide.createIcons();
         }
 
-        // Card Flip Function
-        function flipCard(cardContainer) {
+        /* ==================== 3D FLIP CARDS ==================== */
+        function flipCard(cardContainer, e) {
+            if (e) e.stopPropagation();
             const cardInner = cardContainer.querySelector('.card-inner');
             cardInner.classList.toggle('rotate-y-180');
         }
 
-        // Pesan Surat Panjang & Bahasa Sederhana
+        /* ==================== READ WHEN LETTERS ==================== */
         const notes = {
             sad: {
-                title: "Baca Pas Kamu Lagi Sedih 🌧️",
+                title: "When Today Feels Heavy 🌧️",
                 emoji: "🌧️",
-                text: "Halo kamu... Kalau kamu lagi buka surat ini pas rasanya sedih banget, coba tarik napas pelan-pelan dulu ya.\n\nSering kali kita ngerasa sendirian pas lagi sedih, tapi aku cuma mau ngingetin kalau kamu punya aku dan temen-temen yang peduli sama kamu. Sedih itu hal yang wajar banget kok, gak usah dipaksa buat langsung senyum kalau emang hatinya belum siap.\n\nIstirahat dulu, makan yang enak, dan kalau butuh tempat tumpah cerita atau cuma mau nemenin tanpa ngomong apa-apa, aku siap banget nemenin kamu. You are strong, tapi kamu gak harus selalu keliatan kuat kok. Hugs!"
+                text: "Hey, I'm really sorry today feels tough. It's completely valid to feel overwhelmed—you don't have to force yourself to smile or pretend everything is fine.\n\nTake things one moment at a time. Drink some water, get cozy, and let yourself rest. If you ever need someone to dengerin cerita tanpa menghakimi, I'm always right here. Take care of yourself today."
             },
             tired: {
-                title: "Baca Pas Kamu Lagi Capek ☕",
+                title: "When You're Drained ☕",
                 emoji: "☕",
-                text: "Pasti hari ini terasa berat dan nguras tenaga banget ya?\n\nBoleh banget kok buat berhenti sebentar dan gak ngapa-ngapain. Dunia gak bakal hancur cuma gara-gara kamu rehat sejenak hari ini.\n\nTaruh dulu HP kamu kalau bikin makin pusing, minum air hangat, terus tiduran yang nyaman. Kamu udah berusaha sebaik mungkin hari ini, dan itu udah lebih dari cukup. Aku bangga banget sama kamu, jangan lupa istirahat ya!"
+                text: "You've been carrying a lot lately, haven't you?\n\nIt is completely fine to hit pause and do absolutely nothing for a while. The world won't fall apart just because you decide to take a rest today.\n\nRest isn't something you have to earn—it's necessary. Put your phone away if it's overwhelming, play a calm song, and just let yourself recharge."
             },
             doubt: {
-                title: "Baca Pas Kamu Lagi Insecure / Ragu ⭐",
+                title: "When You Doubt Yourself ⭐",
                 emoji: "⭐",
-                text: "Lagi mikir 'kok aku gini banget ya?' atau ngerasa gak semengagumkan orang lain?\n\nPlis di-stop dulu overthinking-nya ya! Kamu tuh punya banyak banget kebaikan dan keunikan yang sering kamu lupain sendiri.\n\nJangan sampe pikiran negatif kamu bikin kamu lupa seberapa berharganya kamu buat orang-orang di sekitar kamu. Buat aku pribadi, kamu tuh temen yang berharga banget. Tetap jadi diri kamu ya!"
+                text: "It's so easy to fall into the trap of overthinking or comparing your journey to others.\n\nBut please remember: moving quietly at your own pace is still progress. You have so much resilience and thoughtfulness in you that you often forget to notice.\n\nTrust the path you're on and give yourself some grace. You're doing just fine."
             },
             miss: {
-                title: "Baca Pas Kamu Lagi Kangen 🧸",
+                title: "When You Want to Catch Up 🧸",
                 emoji: "🧸",
-                text: "Aww kangen aku ya? Hahaha!\n\nTapi beneran deh, kalau kamu lagi pengen ngobrol hal-hal random atau butuh temen jalan, langsung chat aku aja ya! Gak usah ragu atau takut mengganggu.\n\nKita bisa cerita-cerita, cari jajan, atau sekadar kirim meme kocak. I'm always just one message away!"
+                text: "Life moves pretty fast, but I'd love to catch up with you whenever you're free!\n\nNo big plans needed—whether it's grabbing a drink, chatting random things, or sending funny memes, let's make time soon.\n\nWhenever you feel like talking, just drop a message!"
             }
         };
 
-        function openNote(key) {
+        function openNote(key, e) {
+            if (e) e.stopPropagation();
             const data = notes[key];
             document.getElementById('modalEmoji').innerText = data.emoji;
             document.getElementById('modalTitle').innerText = data.title;
@@ -301,45 +395,86 @@
             document.getElementById('noteModal').classList.remove('hidden');
         }
 
-        function closeNote() {
+        function closeNote(e) {
+            if (e) e.stopPropagation();
             document.getElementById('noteModal').classList.add('hidden');
         }
 
-        // Heart Popper Game Logic
-        let score = 0;
-        const emojis = ['💖', '🌸', '✨', '🎀', '🧸', '🌷'];
-        function popHeart() {
-            score++;
-            document.getElementById('score').innerText = score;
-            const popBtn = document.getElementById('popBtn');
-            popBtn.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            
-            const msgs = [
-                "Semangat terus yaa!", "Nala sayang kalian!", "Kamu keren banget hari ini!", 
-                "Senyum dong! ✨", "Ingat buat istirahat!", "Sending soft energy~ 🌸"
-            ];
-            document.getElementById('gameMessage').innerText = msgs[Math.floor(Math.random() * msgs.length)];
-        }
-
-        // Comfort Capsule Logic (Kata-kata panjang & hangat)
-        const compliments = [
-            "Kamu tuh salah satu alasan orang-orang di sekitar kamu bisa senyum bahagia hari ini! 😊",
-            "Jangan lupa, sekecil apa pun kemajuan kamu hari ini, itu tetep sebuah pencapaian yang patut diapresiasi. ✨",
-            "Cuma ada satu orang kayak kamu di dunia ini, dan itu yang bikin kamu gak akan pernah bisa digantikan oleh siapa pun. 🌸",
-            "Semoga hari ini ada hal-hal manis kecil yang bikin kamu senyum gembira ya! 🍦",
-            "Ingat selalu ya: kamu disayang, dihargai, dan selalu punya tempat di sini. 💕"
+        /* ==================== GAME 1: FORTUNE COOKIE CRACKER ==================== */
+        const fortunes = [
+            "🥠 'A quiet moment today will bring you the exact rest you need.'",
+            "🥠 'You are doing far better than you realize. Keep going.'",
+            "🥠 'Something small and sweet will make you smile today.'",
+            "🥠 'Don't rush the process. Good things take their sweet time.'",
+            "🥠 'Your presence brings comfort to people around you.'"
         ];
 
-        function getCompliment() {
+        function crackCookie(e) {
+            if (e) e.stopPropagation();
+            const cookieBtn = document.getElementById('cookieBtn');
+            const result = document.getElementById('cookieResult');
+            
+            cookieBtn.innerText = '🥠✨';
+            setTimeout(() => cookieBtn.innerText = '🥠', 300);
+
+            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            result.innerHTML = `<span class="animate-fade">${randomFortune}</span>`;
+            createBurst(e.clientX, e.clientY, 12);
+        }
+
+        /* ==================== GAME 2: BUBBLE POP & COMBO ==================== */
+        let score = 0;
+        let combo = 1;
+        let lastClickTime = Date.now();
+        const bubbleEmojis = ['💖', '🌸', '✨', '🎀', '⭐', '🌷'];
+
+        function popHeart(e) {
+            if (e) e.stopPropagation();
+            const currentTime = Date.now();
+            if (currentTime - lastClickTime < 600) {
+                combo++;
+            } else {
+                combo = 1;
+            }
+            lastClickTime = currentTime;
+
+            score += combo;
+            document.getElementById('score').innerText = score;
+            document.getElementById('combo').innerText = `x${combo}`;
+            
+            const popBtn = document.getElementById('popBtn');
+            popBtn.innerText = bubbleEmojis[Math.floor(Math.random() * bubbleEmojis.length)];
+            
+            const msgs = [
+                "Keep going!", "Take a deep breath ✨", "You've got this!", 
+                "Hope today treats you well 🌸", "Don't forget to rest!"
+            ];
+            document.getElementById('gameMessage').innerText = msgs[Math.floor(Math.random() * msgs.length)];
+            
+            createBurst(e.clientX, e.clientY, 8 + combo);
+        }
+
+        /* ==================== COMFORT GENERATOR ==================== */
+        const compliments = [
+            "You don't have to have your whole life mapped out right now. Just focus on your next step.",
+            "Your quiet effort and consistency do not go unnoticed. Keep going at your own pace.",
+            "Be kind to yourself today. You are doing the best you can with what you have.",
+            "Having you as a friend is honestly one of the best parts of my days.",
+            "Never underestimate how much your presence brings comfort to the people around you."
+        ];
+
+        function getCompliment(e) {
+            if (e) e.stopPropagation();
             const res = document.getElementById('capsuleResult');
             const randomMsg = compliments[Math.floor(Math.random() * compliments.length)];
-            res.innerHTML = `<strong>Pesan hangat hari ini:</strong><br><span class="mt-1 block">${randomMsg}</span>`;
+            res.innerHTML = `<strong>A quick reminder for you:</strong><br><span class="mt-1 block">${randomMsg}</span>`;
             res.classList.remove('hidden');
         }
 
-        function sendVirtualHug() {
+        function sendVirtualHug(e) {
+            if (e) e.stopPropagation();
             const res = document.getElementById('capsuleResult');
-            res.innerHTML = `<strong>🫂 Pelukan Hangat Terkirim!</strong><br><span class="mt-1 block">Pelukan paling hangat dan nyaman udah dikirim lewat sinyal internet! Tetep sehat, jaga diri baik-baik, dan jangan lupa senyum hari ini yaa 💕</span><br><span class="text-[11px] text-pink-500 font-semibold mt-2 block">— With love, Nala</span>`;
+            res.innerHTML = `<strong>🫂 Sending Warm Vibes!</strong><br><span class="mt-1 block">A gentle reminder that you're appreciated and valued. Stay healthy, take it easy, and have a good day ahead 💕</span><br><span class="text-[11px] text-pink-500 font-semibold mt-2 block">— Warmly, Nala</span>`;
             res.classList.remove('hidden');
         }
     </script>
