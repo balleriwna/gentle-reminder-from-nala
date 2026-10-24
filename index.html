@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Jar of Warm Reminders</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        cream: '#fdfbf7',
+                        softPink: '#f9ecec',
+                        warmBrown: '#6e5751',
+                        accentPink: '#e29578',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fdfbf7;
+            color: #4a3e3d;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 30px -5px rgba(226, 149, 120, 0.12);
+        }
+        .card-shadow:hover {
+            box-shadow: 0 20px 40px -10px rgba(226, 149, 120, 0.22);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased pb-20">
+
+    <!-- Header Section -->
+    <header class="text-center pt-16 pb-10 px-4 max-w-3xl mx-auto">
+        <span class="inline-block px-4 py-1.5 bg-softPink text-accentPink text-xs font-semibold rounded-full tracking-wider uppercase mb-4">
+            <i class="fa-solid fa-heart mr-1.5"></i> A Safe Place For You
+        </span>
+        <h1 class="font-serif text-4xl sm:text-5xl text-warmBrown font-semibold mb-4 leading-tight">
+            Little Jar of Warm Reminders
+        </h1>
+        <p class="text-gray-600 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+            Whenever the world feels a bit too loud or heavy, open a note here to find a little bit of warmth and comfort.
+        </p>
+        
+        <!-- Daily Jar Random Button -->
+        <div class="mt-8">
+            <button onclick="openRandomModal()" class="px-7 py-3.5 bg-accentPink hover:bg-[#d88465] text-white font-medium rounded-2xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 mx-auto">
+                <i class="fa-solid fa-cookie-bite"></i> Pull a Random Note from the Jar
+            </button>
+        </div>
+    </header>
+
+    <!-- Category Filters -->
+    <section class="max-w-5xl mx-auto px-4 mb-10">
+        <div class="flex flex-wrap items-center justify-center gap-2.5" id="categoryContainer">
+            <!-- Dynamic Category Buttons -->
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <section class="max-w-md mx-auto px-4 mb-12">
+        <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="searchInput" oninput="filterNotes()" placeholder="Search reminders..." class="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-gray-200 focus:outline-none focus:border-accentPink text-sm transition-all shadow-sm">
+        </div>
+    </section>
+
+    <!-- Cards Grid -->
+    <main class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="notesGrid">
+            <!-- Dynamic Note Cards -->
+        </div>
+    </main>
+
+    <!-- Random Note Modal -->
+    <div id="randomModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl transform transition-all relative border border-softPink">
+            <button onclick="closeRandomModal()" class="absolute top-5 right-5 text-gray-400 hover:text-warmBrown w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-xs font-semibold text-accentPink uppercase tracking-widest mb-2" id="modalCategory">
+                Category
+            </div>
+            <h3 class="font-serif text-2xl text-warmBrown mb-4" id="modalTitle">
+                Your Little Reminder
+            </h3>
+            <p class="text-gray-600 leading-relaxed text-base mb-6" id="modalText">
+                Text goes here...
+            </p>
+            <div class="flex justify-end gap-3 border-t border-gray-100 pt-4">
+                <button onclick="copyModalText()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition-colors flex items-center gap-2">
+                    <i class="fa-regular fa-copy"></i> Copy Text
+                </button>
+                <button onclick="openRandomModal()" class="px-4 py-2 bg-softPink text-accentPink hover:bg-accentPink hover:text-white text-xs font-semibold rounded-xl transition-colors">
+                    Pull Another One
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Interactivity -->
+    <script>
+        const reminders = [
+            {
+                id: 1,
+                category: "Overwhelmed & Tired",
+                title: "Pause and Unclench",
+                text: "Hey, do me a favor real quick. Unclench your jaw, lower your shoulders away from your ears, and take one big, slow breath. You have been running on high alert for way too long, and it is completely okay to put everything down for the rest of the day. The tasks and emails can wait until tomorrow. Right now, your only job is to wrap yourself in something soft, drink a warm glass of water, and rest. I am so proud of how hard you have been trying, but please be soft with yourself today."
+            },
+            {
+                id: 2,
+                category: "Overwhelmed & Tired",
+                title: "The 2 AM Reality Check",
+                text: "If you are reading this late at night while the rest of the world is quiet, please rest your eyes after this. I know your thoughts are racing, replaying old moments or worrying about tomorrow. But remember that tired minds love to make problems look ten times bigger than they actually are. Nothing needs to be solved right now at 2 in the morning. Tomorrow will come, and you will handle it then, just like you always do. Close your eyes, take a deep breath, and let your body rest. You are safe, and everything is going to figure itself out."
+            },
+            {
+                id: 3,
+                category: "Overwhelmed & Tired",
+                title: "Zero Days Are Still Valid",
+                text: "Some days you move mountains, and some days you barely make it out of bed. Guess what? Both days are completely valid. You are a human being, not a machine that is supposed to run at 100 percent capacity non-stop. If all you did today was breathe and survive, I am still insanely proud of you. Rest is not something you have to earn after working until you collapse. Rest is something you need so you can actually live. Take today off from expecting so much from yourself."
+            },
+            {
+                id: 4,
+                category: "Self-Doubt & Overthinking",
+                title: "Through My Eyes",
+                text: "I wish you could see yourself through my eyes for just one minute. You would never doubt your brightness, your capacity, or your sweet heart ever again. That quiet inner voice can get loud sometimes and try to convince you that you are not doing enough, but let me remind you of who you really are. You are resilient, thoughtful, and capable of handling so much more than you give yourself credit for. Trust yourself a little more today because I believe in you with all my heart."
+            },
+            {
+                id: 5,
+                category: "Self-Doubt & Overthinking",
+                title: "Stop Being Mean to My Favorite Person",
+                text: "I wish you could hear how kindly you talk to everyone else versus how harshly you talk to yourself. You give other people so much grace and understanding, yet you demand perfection from yourself every single day. Please stop being so mean to my favorite person, okay? You do not need to accomplish something huge every single day to deserve love or rest. Simply getting through a tough week or making yourself food is a victory. Cut yourself some slack today."
+            },
+            {
+                id: 6,
+                category: "Self-Doubt & Overthinking",
+                title: "Progress Isn't Linear",
+                text: "Having a rough patch after a few good weeks does not mean you are back at square one. Growth is messy, and healing takes time. You are learning how to navigate life as you go, and nobody gets it right on the first try. Don't let one bad day trick you into believing you haven't made progress. Look back at how far you have already come. You are doing just fine."
+            },
+            {
+                id: 7,
+                category: "Loved & Valued",
+                title: "The World is Warmer With You",
+                text: "Just a gentle reminder in case nobody told you today: you make this world a significantly warmer and brighter place just by existing in it. Having you in my life is honestly one of the greatest gifts. Your kindness, your laugh, and your beautiful soul never go unnoticed. Thank you for being your authentic, wonderful self through all the ups and downs. Please never forget how deeply loved and cherished you are."
+            },
+            {
+                id: 8,
+                category: "Loved & Valued",
+                title: "A Home in My Heart",
+                text: "In case you forgot today, you are so deeply appreciated. You bring comfort to the people around you without even realizing it. Even on days when you feel quiet, distant, or tired, your presence matters so much. No matter where life takes us or how busy things get, you will always have a safe space with me, and I am endlessly grateful for your existence."
+            },
+            {
+                id: 9,
+                category: "Fresh Start & Courage",
+                title: "Today is Your Day",
+                text: "I am sending you the absolute biggest warm energy possible today! I know you might be feeling a mix of excitement and nervous butterflies right now, but I want you to remember how much heart, preparation, and care you have poured into getting to this point. Step into today with your head held high. Whatever happens, you should be so immensely proud of yourself for showing up. I am sitting in the front row cheering for you!"
+            },
+            {
+                id: 10,
+                category: "Fresh Start & Courage",
+                title: "What If It Goes Right?",
+                text: "I know your stomach is doing flips right now and your mind is listing all the ways things could go wrong, but hear me out: what if it all goes right? Being scared doesn't mean you aren't ready. It just means you care about this. You have prepared for this, and you have survived every uncomfortable moment that brought you to this point. Even if your hands are shaking, take that leap anyway. I am standing right behind you!"
+            },
+            {
+                id: 11,
+                category: "Bite-sized Reminders",
+                title: "Small Physical Reset",
+                text: "Friendly reminder: drinking a cool glass of water, step outside for fresh air, and taking five minutes away from screens can fix at least 30 percent of what is bothering you right now."
+            },
+            {
+                id: 12,
+                category: "Bite-sized Reminders",
+                title: "No Need to Rush",
+                text: "You do not have to figure out the next five years today. Just figure out the next hour, or even the next ten minutes. Small steps still count as moving forward."
+            },
+            {
+                id: 13,
+                category: "Bite-sized Reminders",
+                title: "Mistakes Are Proof",
+                text: "Please remember that making mistakes is just proof that you are out there trying, living, and learning. Never let the fear of messing up keep you from trying."
+            }
+        ];
+
+        let selectedCategory = "All";
+
+        function getCategories() {
+            const categories = ["All", ...new Set(reminders.map(r => r.category))];
+            return categories;
+        }
+
+        function renderCategories() {
+            const container = document.getElementById("categoryContainer");
+            container.innerHTML = getCategories().map(cat => `
+                <button onclick="setCategory('${cat}')" class="px-4 py-2 rounded-2xl text-xs font-semibold transition-all duration-200 ${
+                    selectedCategory === cat 
+                    ? 'bg-accentPink text-white shadow-md' 
+                    : 'bg-white text-gray-600 hover:bg-softPink hover:text-accentPink border border-gray-100'
+                }">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function setCategory(cat) {
+            selectedCategory = cat;
+            renderCategories();
+            filterNotes();
+        }
+
+        function filterNotes() {
+            const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = reminders.filter(r => {
+                const matchesCat = selectedCategory === "All" || r.category === selectedCategory;
+                const matchesSearch = r.title.toLowerCase().includes(searchQuery) || r.text.toLowerCase().includes(searchQuery);
+                return matchesCat && matchesSearch;
+            });
+            renderNotes(filtered);
+        }
+
+        function renderNotes(items) {
+            const grid = document.getElementById("notesGrid");
+            if(items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-400">
+                        <i class="fa-regular fa-face-meh text-3xl mb-3"></i>
+                        <p class="text-sm">No reminders found matching your search.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-3xl p-6 sm:p-7 card-shadow border border-gray-100/80 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[11px] font-bold text-accentPink uppercase tracking-wider bg-softPink px-3 py-1 rounded-full">
+                                ${item.category}
+                            </span>
+                            <button onclick="copyCardText('${item.id}')" title="Copy text" class="text-gray-300 hover:text-accentPink transition-colors">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <h3 class="font-serif text-xl font-semibold text-warmBrown mb-3">
+                            ${item.title}
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                            "${item.text}"
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-50 flex items-center justify-between text-xs text-gray-400">
+                        <span><i class="fa-solid fa-heart text-softPink mr-1"></i> Warm note</span>
+                        <span class="italic font-serif">Jar #0${item.id}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        let currentModalText = "";
+
+        function openRandomModal() {
+            const randomIndex = Math.floor(Math.random() * reminders.length);
+            const randomItem = reminders[randomIndex];
+            
+            document.getElementById("modalCategory").innerText = randomItem.category;
+            document.getElementById("modalTitle").innerText = randomItem.title;
+            document.getElementById("modalText").innerText = `"${randomItem.text}"`;
+            currentModalText = randomItem.text;
+
+            document.getElementById("randomModal").classList.remove("hidden");
+        }
+
+        function closeRandomModal() {
+            document.getElementById("randomModal").classList.add("hidden");
+        }
+
+        function copyModalText() {
+            navigator.clipboard.writeText(currentModalText);
+            alert("Text copied to clipboard!");
+        }
+
+        function copyCardText(id) {
+            const item = reminders.find(r => r.id == id);
+            if(item) {
+                navigator.clipboard.writeText(item.text);
+                alert("Reminder copied!");
+            }
+        }
+
+        // Close modal on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById("randomModal");
+            if (event.target == modal) {
+                closeRandomModal();
+            }
+        }
+
+        // Initial Setup
+        renderCategories();
+        filterNotes();
+    </script>
+</body>
+</html>
